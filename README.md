@@ -1,9 +1,15 @@
-[![CodeGuide](/codeguide-backdrop.svg)](https://codeguide.dev)
+# Crypto Content Platform Pro
 
+> AI-driven crypto content generation platform with advanced orchestration and real-time collaboration
 
-# CodeGuide Starter Pro
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=flat&logo=rust&logoColor=white)](https://www.rust-lang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 
-A modern web application starter template built with Next.js 14, featuring authentication, database integration, and payment processing capabilities.
+## 🚀 Overview
+
+The Crypto Content Platform is a comprehensive, AI-first content generation system designed specifically for cryptocurrency and blockchain content creators. Built with a modern microservices architecture, it provides scalable, real-time content creation with advanced AI orchestration.
 
 ## Tech Stack
 
