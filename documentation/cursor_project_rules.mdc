@@ -1,0 +1,100 @@
+---
+description: Apply these rules when making changes to the project
+globs:
+alwaysApply: true
+---
+
+Update this rule if user requested changes to the project requirement, etc.
+## Project Overview
+
+* **Type:** cursor_project_rules
+* **Description:** This summary is based on the provided repository name (`crypto-content-platform-pro`) and the limited file structure information available. The codebase is a professional-grade content platform tailored for the cryptocurrency niche, enabling creation, management, and publication of crypto-related articles, news, and analysis.
+* **Primary Goal:** Facilitate the drafting, organization, scheduling, and external integration of cryptocurrency content within a performant, SEO-optimized web application.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+* **Directory Rules:**
+    * Next.js 13+ (App Router): `app/[route]/page.tsx` conventions
+    * Next.js 12 (Pages Router): `pages/[route].tsx` pattern
+    * React Router 6: `src/routes/` with `createBrowserRouter`
+
+### Core Directories
+
+* **Versioned Structure:**
+    * `app/api` → Next.js 13+ API routes with Route Handlers (e.g., webhooks)
+    * `app/fonts` → Custom font assets (e.g., `.woff` files)
+    * `app/styles` → Global CSS (`globals.css`) and style modules
+    * `components` → Reusable React components (UI primitives, content blocks)
+    * `public` → Static assets (images, icons)
+
+### Key Files
+
+* **Stack-Versioned Patterns:**
+    * `app/layout.tsx` → Next.js 13+ root layout (shared UI shell)
+    * `app/page.tsx` → Next.js 13+ page component (home or index views)
+    * `app/api/webhooks/route.ts` → Next.js 13+ Route Handler for webhook events
+    * `globals.css` → Global style definitions
+
+## Tech Stack Rules
+
+* **Version Enforcement:**
+    * `next@13` → **App Router required**, no `pages/` directory allowed
+    * `react@18` → Functional components and React Hooks only
+    * `typescript@4.x` → Strict mode enabled; disallow `any` types
+
+## PRD Compliance
+
+* No explicit PRD constraints were provided in the context.
+
+## App Flow Integration
+
+* **Webhook Flow:** Next.js 13 API Route Handler → `app/api/webhooks/route.ts` processes incoming events from external services (crypto exchanges, CMS webhooks).
+
+## Best Practices
+
+* Next.js
+    * Follow App Router conventions: use `app/` for all routes and layouts.
+    * Leverage Server Components for data fetching and performance.
+    * Optimize fonts and images using built-in Next.js utilities.
+    * Use `next/link` and `next/navigation` for client-side transitions.
+
+* React
+    * Use functional components with Hooks (`useState`, `useEffect`, custom hooks).
+    * Encapsulate reusable logic in custom hooks and higher-order components.
+    * Apply `React.memo` and `useCallback`/`useMemo` to prevent unnecessary renders.
+
+* TypeScript
+    * Enable `strict` compiler options; avoid `any` and `@ts-ignore`.
+    * Define clear interfaces/types for component props and API payloads.
+    * Use enums and generics for domain modeling and reusability.
+
+* CSS
+    * Scope styles via CSS Modules or global CSS in `globals.css`.
+    * Use utility classes or design tokens for consistent theming.
+    * Load custom fonts through Next.js font optimization.
+
+## Rules
+
+* Derive folder and file patterns directly from documented tech-stack versions.
+* If using Next.js 13+ App Router: enforce an `app/` directory with nested route folders; **do not** use `pages/`.
+* If using Pages Router: adopt a flat `pages/*.tsx` structure; **do not** mix with `app/`.
+* Mirror this versioned routing logic for other frameworks (React Router, SvelteKit, etc.).
+
+## Rules Metrics
+
+Before starting project development, create a metrics file named `cursor_metrics.md` in the project root.
+
+### Instructions:
+* Each time a cursor rule is used as context, update `cursor_metrics.md`.
+* Use the following format for `cursor_metrics.md`:
+
+# Rules Metrics
+
+## Usage
+The number of times rules is used as context
+
+* rule-name.mdc: 5
+* another-rule.mdc: 2
+* ...other rules

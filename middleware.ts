@@ -1,25 +1,28 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 import { NextRequest, NextResponse } from "next/server"
 
-// Default Next.js middleware to allow all requests
-export function middleware(request: NextRequest) {
-  return NextResponse.next()
-}
+// Define protected routes
+const isProtectedRoute = createRouteMatcher([
+  '/dashboard(.*)',
+  '/content(.*)',
+  '/settings(.*)',
+  '/analytics(.*)',
+])
 
-/**
- * Uncomment the following code to enable authentication with Clerk
- */
+export default clerkMiddleware(async (auth, req) => {
+    if (isProtectedRoute(req)) {
+      const { userId } = auth()
+      
+      if (!userId) {
+        // Redirect to sign-in page if not authenticated
+        const signInUrl = new URL('/sign-in', req.url)
+        signInUrl.searchParams.set('redirect_url', req.url)
+        return NextResponse.redirect(signInUrl)
+      }
+    }
 
-// const isProtectedRoute = createRouteMatcher(['/protected'])
-
-// export default clerkMiddleware(async (auth, req) => {
-//     if (isProtectedRoute(req)) {
-//       // Handle protected routes check here
-//       return NextResponse.redirect(req.nextUrl.origin)
-//     }
-
-//     return NextResponse.next()
-// })  
+    return NextResponse.next()
+})  
 
 export const config = {
   matcher: [

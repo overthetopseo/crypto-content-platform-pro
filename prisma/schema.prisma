@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Post status enum
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+}
+
+// Post model for content management
+model Post {
+  id          String      @id @default(cuid())
+  title       String
+  content     String
+  slug        String      @unique
+  excerpt     String?
+  status      PostStatus  @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  // Foreign keys
+  authorId    String
+  categoryId  String?
+  
+  // Relations
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags        PostTag[]
+  
+  @@map("posts")
+}
+
+// Category model for post categorization
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  posts Post[]
+  
+  @@map("categories")
+}
+
+// Tag model for post tagging
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  posts PostTag[]
+  
+  @@map("tags")
+}
+
+// Many-to-many relationship table for Post-Tag
+model PostTag {
+  id      String @id @default(cuid())
+  postId  String
+  tagId   String
+  
+  // Relations
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  @@unique([postId, tagId])
+  @@map("post_tags")
+}
+
+// User settings model for user preferences
+model UserSettings {
+  id           String @id @default(cuid())
+  userId       String @unique
+  preferences  Json   @default("{}")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("user_settings")
+}
+
+// User model (simplified - Clerk will handle authentication)
+model User {
+  id            String           @id @default(cuid())
+  email         String?          @unique
+  username      String?
+  firstName     String?
+  lastName      String?
+  avatar        String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  
+  // Relations
+  posts         Post[]
+  settings      UserSettings?
+  
+  @@map("users")
+}
