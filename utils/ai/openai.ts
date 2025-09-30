@@ -1,5 +1,6 @@
 import { OpenAI } from "openai";
 import { ChatCompletionCreateParamsBase, ChatCompletionMessageParam } from "openai/resources/chat/completions";
+import { getAIConfig } from "@/lib/config";
 
 interface GenerateCompletionArgs {
     chat: ChatCompletionMessageParam[];
@@ -37,12 +38,11 @@ export async function generateCompletion(args: GenerateCompletionArgs): Promise<
         toolParams,
     } = args;
 
-    const openaiKey = process.env.OPENAI_API_KEY;
-    if (!openaiKey) {
-        throw new Error("OpenAI API key is not configured");
-    }
-
-    const openai = new OpenAI({ apiKey: openaiKey });
+    const config = getAIConfig('openai');
+    const openai = new OpenAI({ 
+        apiKey: config.apiKey,
+        baseURL: config.baseURL,
+    });
 
     const isReadoningModel = model.includes("o3") || model.includes("o1")
 
