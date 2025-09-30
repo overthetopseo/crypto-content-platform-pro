@@ -38,10 +38,14 @@ export async function generateCompletion(args: GenerateCompletionArgs): Promise<
         toolParams,
     } = args;
 
-    const config = getAIConfig('openai');
+    const apiKey = process.env.OPENAI_API_KEY;
+    const baseURL = process.env.OPENAI_BASE_URL;
+    if (!apiKey) {
+        throw new Error("Missing OpenAI API key in environment variables (OPENAI_API_KEY)");
+    }
     const openai = new OpenAI({ 
-        apiKey: config.apiKey,
-        baseURL: config.baseURL,
+        apiKey,
+        baseURL,
     });
 
     const isReadoningModel = model.includes("o3") || model.includes("o1")
